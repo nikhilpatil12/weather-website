@@ -1,0 +1,138 @@
+.background{
+    background-image: url('../src/weather-images/weather-image-cloudy.jpg');
+    background-repeat: no-repeat;
+    /* background-size: auto; */
+    background-size: 100vw 100vh;
+    width: 100%;
+    height: 100vh;
+
+}
+
+.main_component{
+    position: absolute;
+    /* background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px); */
+    width: 90vw;
+    height: 90vh;
+    margin: 5vh 5vw;
+    border-radius: 4vh;
+}
+
+.sidebar{
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    width: 25%;
+    height: 100%;
+    border-radius: 4vh 0vh 0vh 4vh;
+}
+
+.detail_component{
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    width: 75%;
+    height: 100%;
+    border-radius: 0vh 4vh 4vh 0vh;
+    margin-left: 25%;
+}
+
+.search_results{
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 10px;
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 5vh;
+    list-style: none;
+    margin: 0 auto;
+    width: 15vw;
+    padding: 0;
+    color: azure;
+    background: rgba(0, 0, 0, 0.75);
+}
+
+.search_results li{
+    padding: 1vh 1vw;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px;
+    border-color: rgba(255, 255, 255, 0.234);
+    border-bottom-style: solid;
+}
+
+.search_results li:last-child{
+    border-style: none;
+}
+
+.searchbar{
+    border-radius: 5vh;
+    height: 5vh;
+    border: none;
+    padding: 0 1vw;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    margin: 2vw;
+}
+.searchbarinput{
+    /* border-radius: 20px; */
+    width: 100%;
+    height: 50px;
+    border: none;
+    font-size: 20px;
+    padding: 0 10px;
+    color: rgb(201, 201, 201);
+    background-color: rgba(0,0,0,0);
+}
+.searchbarinput:focus{
+    outline: none;
+}
+.location_button{
+    background-color: rgba(0,0,0,0);
+    border: none;
+    cursor: pointer;
+}
+
+.menubar{
+    height: max-content;
+    background-color: transparent;
+    display: flex;
+    padding: 2vw;
+}
+
+.menutab{
+    width: fit-content;
+    width: -moz-fit-content;
+    height: 5vh;
+    background-color: rgba(255 ,255 ,255 ,0.5);
+    border: none;
+    padding: 0 1%;
+    border-radius: 25vw;
+    font-size: 2vh;
+    font-weight: 500;
+    margin: 0 0 0 1vw;
+    color: black;
+    cursor: pointer;
+}
+.temperature_button{
+    display: block;
+    background-color: rgba(255 ,255 ,255 ,0.5);
+    border: none;
+    padding: 0 1%;
+    border-radius: 25vw;
+    font-size: 2vh;
+    font-weight: 500;
+    margin: 0 1vw 0 0;
+    color: black;
+    width: 5vh;
+    height: 5vh;
+    cursor: pointer;
+}
+
+.spacer_div{
+    width: 100rem;
+}
