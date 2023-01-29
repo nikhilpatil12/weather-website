@@ -34,11 +34,7 @@ const MainComponent = () => {
     }
     fetchData().catch(console.error);
 
-  },[]);
-
-  useMemo(()=>{
-    
-  })
+  },[weatherData]);
   // console.log(weatherData)
   // if (weatherData==null || locationData==null )
   //   return <div>Loading</div>

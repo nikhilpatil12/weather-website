@@ -9,13 +9,13 @@ const Sidebar = (props) =>{
 
     const { weatherData, setWeatherData } = useContext(WeatherDataContext);
     
-    useEffect(() => {
-        // setWeatherData(props.weather)
-        console.log(weatherData)
-        // setLocationData(props.location)
-        // console.log(props.location)
-        // props.onChange(weatherData);
-    },[weatherData]);
+    // useEffect(() => {
+    //     // setWeatherData(props.weather)
+    //     console.log(weatherData)
+    //     // setLocationData(props.location)
+    //     // console.log(props.location)
+    //     // props.onChange(weatherData);
+    // },[weatherData]);
 
     if (weatherData==null)
         return <div></div>

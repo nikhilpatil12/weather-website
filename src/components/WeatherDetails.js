@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
+import { WeatherDataContext } from "../contexts/WeatherDataContext";
 
-const WeatherDetails = (props) => {
-    const [weatherData, setWeatherData] = useState();
-    const prepareDailyWeatherObject = (data) => {
-        console.log(data)
-        let weekweatherdata = [];
+const WeatherDetails = () => {
+    const wData = useContext(WeatherDataContext);
+    console.log(wData)
+    // const [weatherData, setWeatherData] = useState();
+    // const prepareDailyWeatherObject = (data) => {
+    //     console.log(data)
+    //     let weekweatherdata = [];
 
-    }
+    // }
     // prepareDailyWeatherObject(props);
-    useEffect(() => {
-        setWeatherData(props.weather);
-        prepareDailyWeatherObject(weatherData);
-    },[props.weather]);
+    // useEffect(() => {
+    //     // const wData = useContext(WeatherDataContext);
+    //     console.log(wData);
+    // },[wData]);
     // function getWeatherType (weathercode){}
     //         switch (weathercode) {
     //             case 0:
@@ -104,7 +107,16 @@ const WeatherDetails = (props) => {
     //     }
 
     return <div>
-        {JSON.stringify(weatherData)}
+        <div>{JSON.stringify(wData)}</div>;
+        {/* <WeatherDataContext.Consumer>
+            {({weatherData, setWeatherData}) => (
+                <button
+                onClick={setWeatherData}>
+                {weatherData}
+                </button>
+            )}
+        </WeatherDataContext.Consumer> */}
+        {/* {JSON.stringify(weatherData)} */}
         <div>
             {/* <ul>
                 {props.daily.map(dailyweather => (
