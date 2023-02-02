@@ -57,11 +57,12 @@ const Search = (props) => {
         weatherdata.locationState = locationState;
         weatherdata.locationCountry = locationCountry
         // setWeatherData(weatherdata);
-        console.log(weatherdata)
         setSearchSuggestions();
         setSearchTerm('');
         // props.onChange(weatherdata);
-        setWeatherData(weatherData);
+        setWeatherData(weatherdata);
+        console.log("SEArch:64")
+        console.log(weatherdata)
     }
 
     return (

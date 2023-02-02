@@ -136,3 +136,57 @@
 .spacer_div{
     width: 100rem;
 }
+
+.weekData{
+    width: 100%;
+    /* height: 20vh; */
+    padding: 2% 0;
+}
+
+.weekInfoBlock{
+    width: 10%;
+    /* height: 5vh; */
+    background-color: rgba(255 ,255 ,255 ,0.5);
+    border: none;
+    padding: 1% 1%;
+    border-radius: 2vw;
+    font-size: 2vh;
+    font-weight: 500;
+    margin: 0 0.5%;
+    color: black;
+    display: inline-block;
+}
+
+.weekWeatherIcon{
+    margin: 8%;
+    font-size: 50px;
+    color: rgba(28, 28, 28, 0.666);
+}
+
+.dayData{
+    /* width: 100%; */
+    height: 20vh;
+    padding: 2% 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.dayInfoBlock{
+    width: 5%;
+    /* height: 5vh; */
+    background-color: rgba(255 ,255 ,255 ,0.5);
+    border: none;
+    padding: 1% 1%;
+    border-radius: 2vw;
+    font-size: 2vh;
+    font-weight: 500;
+    margin: 0 0.5%;
+    color: black;
+    display: inline-block;
+}
+
+.dayWeatherIcon{
+    margin: 8%;
+    font-size: 30px;
+    color: rgba(28, 28, 28, 0.666);
+}
