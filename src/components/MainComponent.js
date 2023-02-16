@@ -3,13 +3,18 @@ import styles from '../style.module.css';
 import DetailComponent from "./DetailComponent";
 import Sidebar from "./Sidebar";
 import { WeatherDataContext } from "../contexts/WeatherDataContext";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Spinner from 'react-bootstrap/Spinner';
+
 const MainComponent = () => {
 
   const [weatherData, setWeatherData] = useState();
 
-  const wData = { weatherData, setWeatherData };
-
   const [locationData, setLocationData] = useState();
+
+  const wData = { weatherData, setWeatherData};
   
   useEffect(() => {
       const fetchData = async() => {
@@ -29,6 +34,8 @@ const MainComponent = () => {
                 weatherdata=wData;
         });
         weatherdata.locationName = locationdata.name;
+        weatherdata.locationState = locationdata.admin1;
+        weatherdata.locationCountry = locationdata.country;
         wData.setWeatherData(weatherdata);
         setLocationData(locationdata);
         // props.onChange(weatherdata);
@@ -41,13 +48,21 @@ const MainComponent = () => {
   // else
 
   if (weatherData==null)
-    return <div>Loading</div>
+    return <div className="d-flex align-items-center justify-content-center" style={{height: '100%'}}><Spinner  animation="grow" style={{width: '100px', height: 'max-content'}}/></div>
   else
     return (
       <div className={styles.main_component}>
         <WeatherDataContext.Provider value={wData}>
-          <Sidebar></Sidebar>
-          <DetailComponent></DetailComponent>
+          <Container fluid>
+            {/* <Row> */}
+              <Col lg={4} md={4} xl={3} xxl={3} sm={12} xs={12}>
+                <Sidebar></Sidebar>
+              </Col>
+              <Col lg={{span: 8, offset:4}} md={{span: 8, offset:4}} xl={{span: 9, offset:3}} xxl={{span: 9, offset:3}} sm={{span:12, offset:12}} xs={{span:12, offset:12}}>
+                <DetailComponent></DetailComponent>
+              </Col>
+            {/* </Row> */}
+          </Container>
         </WeatherDataContext.Provider>
       </div>
     );

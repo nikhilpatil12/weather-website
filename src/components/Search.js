@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { WeatherDataContext } from "../contexts/WeatherDataContext";
 
 const Search = (props) => {
-    const { weatherData, setWeatherData } = useContext(WeatherDataContext);
+    const { weatherData, setWeatherData, locationData, setLocationData } = useContext(WeatherDataContext);
     const [searchTerm, setSearchTerm] = useState('');
     const [searchSuggestions, setSearchSuggestions] = useState([]);
     const [userLocation, setUserLocation] = useState({});
@@ -61,7 +61,11 @@ const Search = (props) => {
         setSearchTerm('');
         // props.onChange(weatherdata);
         setWeatherData(weatherdata);
-        console.log("SEArch:64")
+        // var lData = {};
+        // weatherdata.locationName = locationName;
+        // lData.admin1 = locationState;
+        // lData.country = locationCountry;
+        // setLocationData(locationData);
         console.log(weatherdata)
     }
 

@@ -1,13 +1,21 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { WeatherDataContext } from "../contexts/WeatherDataContext";
+import { DayWeekContext } from "../contexts/DayWeekContext";
 import styles from '../style.module.css';
 import '../css/weather-icons.min.css';
+import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
+import Row from 'react-bootstrap/Row';
+import Collapse from 'react-bootstrap/Collapse';
+import classNames from 'classnames';
 
 const WeatherDetails = () => {
     const wData = useContext(WeatherDataContext);
-    // console.log(wData.weatherData)
+    console.log(wData.weatherData)
     var weekdata = wData.weatherData.daily;
     var daydata = wData.weatherData.hourly;
+    
+    const dwData = useContext(DayWeekContext);
     const prepareWeekWeatherObject = (data) => {
         // console.log(data)
         let weekweatherdata = [];
@@ -35,34 +43,46 @@ const WeatherDetails = () => {
             wd.windspeed_10m_max = data.windspeed_10m_max[i];
             weekweatherdata.push(wd);
         }
-        console.log(weekweatherdata);
+        // console.log(weekweatherdata);
         return weekweatherdata;
     }
-    const prepareDayWeatherObject = (data) => {
+    const prepareDayWeatherObject = (data, datetime) => {
         // console.log(data)
         let dayweatherdata = [];
+        var len = 0;
         for(var i=0;i<100;i++){
             // console.log(data[i])
-            var dd={};
-            dd.time = data.time[i];
-            dd.hh = data.time[i].split('T')[1].split(':')[0];
-            dd.hour = getHour(data.time[i]);
-            dd.apparent_temperature = data.apparent_temperature[i];
-            dd.cloudcover = data.cloudcover[i];
-            dd.dewpoint_2m = data.dewpoint_2m[i];
-            dd.precipitation = data.precipitation[i];
-            dd.rain = data.rain[i];
-            dd.relativehumidity_2m = data.relativehumidity_2m[i];
-            dd.showers = data.showers[i];
-            dd.snow_depth = data.snow_depth[i];
-            dd.snowfall = data.snowfall[i];
-            dd.temperature_2m = data.temperature_2m[i];
-            dd.temperature_rounded = Math.round(data.temperature_2m[i]);
-            dd.visibility = data.visibility[i];
-            dd.weathertype = getWeatherType(data.weathercode[i]);
-            dd.weathercode = data.weathercode[i];
-            dd.windspeed_10m = data.windspeed_10m[i];
-            dayweatherdata.push(dd);
+            var datadate = data.time[i].split('T')[0];
+            var currentdate = datetime.split('T')[0];
+            var datatime = data.time[i].split('T')[1].split(':')[0]
+            var currenttime = datetime.split('T')[1].split(':')[0]
+            if(datadate >= currentdate && len<24)
+            {
+                if((datadate===currentdate && datatime>currenttime)||datadate>currentdate){
+                    var dd={};
+                    dd.time = data.time[i];
+                    dd.hh = data.time[i].split('T')[1].split(':')[0];
+                    dd.hour = getHour(data.time[i]);
+                    dd.day = data.time[i].split('T')[0];
+                    dd.apparent_temperature = data.apparent_temperature[i];
+                    dd.cloudcover = data.cloudcover[i];
+                    dd.dewpoint_2m = data.dewpoint_2m[i];
+                    dd.precipitation = data.precipitation[i];
+                    dd.rain = data.rain[i];
+                    dd.relativehumidity_2m = data.relativehumidity_2m[i];
+                    dd.showers = data.showers[i];
+                    dd.snow_depth = data.snow_depth[i];
+                    dd.snowfall = data.snowfall[i];
+                    dd.temperature_2m = data.temperature_2m[i];
+                    dd.temperature_rounded = Math.round(data.temperature_2m[i]);
+                    dd.visibility = data.visibility[i];
+                    dd.weathertype = getWeatherType(data.weathercode[i]);
+                    dd.weathercode = data.weathercode[i];
+                    dd.windspeed_10m = data.windspeed_10m[i];
+                    dayweatherdata.push(dd);
+                    len++;
+                }
+            }
         }
         console.log(dayweatherdata);
         return dayweatherdata;
@@ -76,10 +96,8 @@ const WeatherDetails = () => {
 
     const getHour = timeStr => {
         var hour='';
-        console.log(timeStr)
         var hh = parseInt(timeStr.split('T')[1].split(':')[0]);
 
-        console.log(hh)
         if(hh!==0 || hh!==12){
             if(hh>0 && hh<12)
                 hour = hh+'AM'
@@ -91,23 +109,22 @@ const WeatherDetails = () => {
         }if(hh===12){
             hour = '12PM'
         }
-        console.log(hour)
         return hour;
     }
 
     var processedWeekData = prepareWeekWeatherObject(weekdata);
-    var processedDayData = prepareDayWeatherObject(daydata);
+    var processedDayData = prepareDayWeatherObject(daydata, wData.weatherData.current_weather.time);
 
-    console.log(processedDayData)
-    console.log(processedWeekData)
+    // console.log(processedDayData)
+    // console.log(processedWeekData)
     // var weekRender, dayRender;
     // if(processedWeekData!=null){
         const weekRender = processedWeekData!=null?processedWeekData.map((processedData) =>
-        <div className={styles.weekInfoBlock}>
+        <div className={styles.weekInfoBlock} key={processedData.time}>
             {processedData.weekday}<br></br>
             <div className={styles.weekWeatherIcon}>
                 {/* <img className={styles.weatherIcon} src = {MySvg}></img> */}
-                <i width='40px' class={getWeatherIcon(processedData.weathercode, 7)} ></i>
+                <i width='40px' className={getWeatherIcon(processedData.weathercode, 7)} ></i>
             </div>
             {/* {processedData.weathertype} */}
             {processedData.temperature_2m_min}º,  
@@ -115,19 +132,37 @@ const WeatherDetails = () => {
         </div>
     ):processedWeekData;
 
-    const dayRender = processedDayData!=null?processedDayData.map((processedData) =>
-        <div className={styles.dayInfoBlock}>
+    const dayRender = (first, last) => processedDayData.slice(first,last).map((processedData) =>
+        <div className={styles.dayInfoBlock} key={processedData.time}>
             {processedData.hour}
             
             <div className={styles.dayWeatherIcon}>
                 {/* <img className={styles.weatherIcon} src = {MySvg}></img> */}
-                <i width='40px' class={getWeatherIcon(processedData.weathercode, processedData.hh)} ></i>
+                <i width='40px' className={getWeatherIcon(processedData.weathercode, processedData.hh)} ></i>
             </div>
             {/* {processedData.weathertype} */}
             {processedData.temperature_rounded}º
         </div>
-    ):processedWeekData;
+    );
+    const [cStart, setCstart] = useState(0);
+    const [cEnd, setCend] = useState(8);
 
+    const forward = () => {
+        if(cStart<16)
+        {
+            setCstart(cStart+8);
+            setCend(cEnd+8);
+            console.log(cStart, cEnd)
+        }
+    }
+    const backward = () => {
+        if(cStart>0)
+        {
+            setCstart(cStart-8);
+            setCend(cEnd-8);
+            console.log(cStart, cEnd)
+        }
+    }
     // }
 
 
@@ -257,28 +292,27 @@ const WeatherDetails = () => {
         }
     }
   
-    if(weekRender==null)
-        return "Loading"
-    else return <div>
-            <div className={styles.weekData}>
+    if(weekRender==null || dayRender==null)
+        return <Spinner animation="grow" />;
+    else return <div className={styles.render}>
+            {dwData.weekEnabled?<div className={styles.weekData}>
                 {weekRender}
-            </div>
-            <div className={styles.dayData}>
-                {dayRender}
-            </div>
-            <div id="dayData">
-                dgfd 
-            </div>
-            {/* <div>{JSON.stringify(wData)}</div>; */}
-                {/* <ul>
-                    {props.daily.map(dailyweather => (
-                    <li key={dailyweather.id}>
-                        <div onClick={event => selectLocation(event, suggestion.latitude, suggestion.longitude, suggestion.name, suggestion.admin1, suggestion.country_code)}>
-                            {suggestion.name}, {suggestion.admin1}, {suggestion.country_code}, <img width='20px' src={`http://www.geonames.org/flags/x/${suggestion.country_code.toLowerCase()}.gif`}/>
+            </div>:''}
+            {!dwData.weekEnabled?<div className={styles.dayData}>
+                <div className={styles.scrollview}>
+                    <Row>
+                        <div className={`d-flex align-items-center justify-content-end ${styles.col}`} style={{padding:'0', alignItems:'end', flex: '0 0 auto', width: '4%'}}>
+                            {cStart===0?'':<button className={`rounded-circle ${styles.roundedBackButton}`} onClick={backward}>◁</button>}
                         </div>
-                    </li>
-                    ))}
-                </ul> */}
+                        <div id='collapse' style={{'padding':'0', flex: '0 0 auto', width: '92%'}}>
+                            {dayRender(cStart,cEnd)}
+                        </div>
+                        <div className={`d-flex align-items-center justify-content-start`} style={{padding:'0', alignItems:'start', flex: '0 0 auto', width: '4%'}}>
+                            {cStart===16?'':<button className={`rounded-circle ${styles.roundedNextButton}`} onClick={forward}>▷</button>}
+                        </div>
+                    </Row>
+                </div>
+            </div>:''}
         </div>
 }
 

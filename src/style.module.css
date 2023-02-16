@@ -22,9 +22,9 @@
 .sidebar{
     position: absolute;
     background-color: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
-    width: 25%;
+    backdrop-filter: blur(30px);
+    width: inherit;
     height: 100%;
     border-radius: 4vh 0vh 0vh 4vh;
 }
@@ -32,17 +32,16 @@
 .detail_component{
     position: absolute;
     background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    width: 75%;
+    backdrop-filter: blur(20px);
+    width: inherit;
     height: 100%;
     border-radius: 0vh 4vh 4vh 0vh;
-    margin-left: 25%;
 }
 
 .search_results{
-    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px);
     border-radius: 10px;
     position: absolute;
     left: 0px;
@@ -108,29 +107,29 @@
     width: fit-content;
     width: -moz-fit-content;
     height: 5vh;
-    background-color: rgba(255 ,255 ,255 ,0.5);
+    background-color: rgba(35, 35, 35, 0.588);
     border: none;
     padding: 0 1%;
     border-radius: 25vw;
     font-size: 2vh;
     font-weight: 500;
     margin: 0 0 0 1vw;
-    color: black;
+    color: white;
     cursor: pointer;
 }
 .temperature_button{
     display: block;
     background-color: rgba(255 ,255 ,255 ,0.5);
     border: none;
-    padding: 0 1%;
-    border-radius: 25vw;
+    /* padding: 0 1%;
+    border-radius: 25vw; */
     font-size: 2vh;
     font-weight: 500;
     margin: 0 1vw 0 0;
     color: black;
-    width: 5vh;
-    height: 5vh;
-    cursor: pointer;
+    width: 8%;
+    /* height: 100%; */
+    /* cursor: pointer; */
 }
 
 .spacer_div{
@@ -144,7 +143,7 @@
 }
 
 .weekInfoBlock{
-    width: 10%;
+    width: 12%;
     /* height: 5vh; */
     background-color: rgba(255 ,255 ,255 ,0.5);
     border: none;
@@ -162,22 +161,35 @@
     font-size: 50px;
     color: rgba(28, 28, 28, 0.666);
 }
+.currentWeatherIcon{
+    margin: 8%;
+    font-size:140px;
+    color: rgba(28, 28, 28, 0.666);
+}
+.currentWeather{
+    margin: 0 10%;
+    color: rgba(248, 250, 255, 0.742);
+}
+.currentWeatherTemp{
+    font-size: 70px;
+}
 
 .dayData{
-    /* width: 100%; */
-    height: 20vh;
+    margin: 0 auto;
+    width: 90%;
+    height: min-content;
     padding: 2% 0;
-    overflow-x: auto;
-    overflow-y: hidden;
+    /* overflow-x: scroll;
+    overflow-y: hidden; */
 }
 
 .dayInfoBlock{
-    width: 5%;
-    /* height: 5vh; */
+    width: 11%;
+    height: min-content;
     background-color: rgba(255 ,255 ,255 ,0.5);
     border: none;
     padding: 1% 1%;
-    border-radius: 2vw;
+    border-radius: 0.5vw;
     font-size: 2vh;
     font-weight: 500;
     margin: 0 0.5%;
@@ -187,6 +199,79 @@
 
 .dayWeatherIcon{
     margin: 8%;
-    font-size: 30px;
+    font-size: 180%;
     color: rgba(28, 28, 28, 0.666);
+}
+.buttonWrapper{
+    display: flex;
+    width: inherit;
+    height: inherit;
+    vertical-align: middle;
+}
+.roundedBackButton{
+    background-color: rgba(255, 255, 255, 0.451);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border: none;
+    vertical-align: middle;
+    border-radius: 100px;
+}
+.roundedBackButton:hover{
+    background-color: rgba(255, 255, 255, 0.677);
+}
+.roundedNextButton{
+    background-color: rgba(255, 255, 255, 0.451);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border: none;
+    border-radius: 100px;
+}
+.roundedNextButton:hover{
+    background-color: rgba(255, 255, 255, 0.677);
+}
+.col{
+    flex: 0 0 auto;
+    width: 4%;
+}
+.col11{
+    flex: 0 0 auto;
+    width: 92%;
+}
+
+.animate {
+    transition: opacity 0.6s ease-in-out;
+    transition: transform 0.6s ease-in-out;
+    /* animation-name: fadein;
+    animation-duration: 0.6s;
+    animation-timing-function: ease-in-out; */
+    /* animation: 3s infinite alternate fadein; */
+}
+  
+.animate.grow {
+    /* transform:scaleX(0.999); */
+    /* transform:scaleX(1); */
+    animation: 3s linear 0s fadein;
+}
+.animate.grow2 {
+    transform:scaleX(0);
+    transform:scaleX(1);
+/* 
+    opacity: 0.8; */
+    /* animation: 3s infinite alternate fadein; */
+}
+@keyframes fadein {
+    from {
+      transform: opacity(1);
+    }
+    50%{
+        transform: opacity(0);
+    }
+    to {
+      transform: opacity(0);
+    }
+}
+
+.activeTab{
+    background-color: rgba(255, 255, 255, 0.334);
+    color: black;
 }
