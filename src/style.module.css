@@ -135,6 +135,15 @@
 .spacer_div{
     width: 100rem;
 }
+.spacer_div_single{
+    width: 1rem;
+}
+.roundedtoggleright{
+    border-top-right-radius: 100%;
+    border-bottom-right-radius: 100%;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
 
 .weekData{
     width: 100%;

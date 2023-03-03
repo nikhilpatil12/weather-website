@@ -7,7 +7,10 @@ import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import Row from 'react-bootstrap/Row';
 import Collapse from 'react-bootstrap/Collapse';
-import classNames from 'classnames';
+import { Box, IconButton, List } from "@mui/material";
+import { TransitionGroup } from 'react-transition-group';
+import { ArrowLeft, NavigateBefore, NavigateNext, SwipeLeft } from "@mui/icons-material";
+
 
 const WeatherDetails = () => {
     const wData = useContext(WeatherDataContext);
@@ -15,6 +18,8 @@ const WeatherDetails = () => {
     var weekdata = wData.weatherData.daily;
     var daydata = wData.weatherData.hourly;
     
+    const containerRef = React.useRef(null);
+
     const dwData = useContext(DayWeekContext);
     const prepareWeekWeatherObject = (data) => {
         // console.log(data)
@@ -146,6 +151,8 @@ const WeatherDetails = () => {
     );
     const [cStart, setCstart] = useState(0);
     const [cEnd, setCend] = useState(8);
+    const [cArr, setCarr] = useState([0,8,16]);
+    const [cDayWeek, setCdayWeek] = useState([1,2]);
 
     const forward = () => {
         if(cStart<16)
@@ -292,28 +299,55 @@ const WeatherDetails = () => {
         }
     }
   
+    const renderWeekOrDay = (item) => {
+        return <div>{dwData.weekEnabled?<Box className={styles.weekData}>{weekRender}</Box>:''}
+        {!dwData.weekEnabled?
+        <Box className={styles.dayData}>
+            <div className={styles.scrollview}>
+                <Row>
+                    <div className={`d-flex align-items-center justify-content-end ${styles.col}`} style={{padding:'0', alignItems:'end', flex: '0 0 auto', width: '4%'}}>
+                        {/* {cStart===0?'':<button className={`rounded-circle ${styles.roundedBackButton}`} onClick={backward}>◁</button>} */}
+                        {cStart===0?'':<IconButton onClick={backward}><NavigateBefore></NavigateBefore></IconButton>}
+                    </div>
+                    <Box id='collapse' style={{'padding':'0', flex: '0 0 auto', width: '92%', overflow: 'hidden'}} ref={containerRef}>
+                        <List>
+                            <TransitionGroup>
+                                {cArr.map((start)=> (
+                                    <Collapse key={cStart} container={containerRef.current}>
+                                        <Box>
+                                            {dayRender(cStart, cEnd)}
+                                        </Box>
+                                    </Collapse>
+
+                                ))}
+                            </TransitionGroup>
+                        </List>
+                    </Box>
+                    <div className={`d-flex align-items-center justify-content-start`} style={{padding:'0', alignItems:'start', flex: '0 0 auto', width: '4%'}}>
+                        {/* {cStart===16?'':<button className={`rounded-circle ${styles.roundedNextButton}`} onClick={forward}>▷</button>} */}
+                        {cStart===16?'':<IconButton variant="outlined" onClick={forward}><NavigateNext></NavigateNext></IconButton>}
+                    </div>
+                </Row>
+            </div>
+        </Box>:''}
+</div>
+    }
+
     if(weekRender==null || dayRender==null)
         return <Spinner animation="grow" />;
     else return <div className={styles.render}>
-            {dwData.weekEnabled?<div className={styles.weekData}>
-                {weekRender}
-            </div>:''}
-            {!dwData.weekEnabled?<div className={styles.dayData}>
-                <div className={styles.scrollview}>
-                    <Row>
-                        <div className={`d-flex align-items-center justify-content-end ${styles.col}`} style={{padding:'0', alignItems:'end', flex: '0 0 auto', width: '4%'}}>
-                            {cStart===0?'':<button className={`rounded-circle ${styles.roundedBackButton}`} onClick={backward}>◁</button>}
-                        </div>
-                        <div id='collapse' style={{'padding':'0', flex: '0 0 auto', width: '92%'}}>
-                            {dayRender(cStart,cEnd)}
-                        </div>
-                        <div className={`d-flex align-items-center justify-content-start`} style={{padding:'0', alignItems:'start', flex: '0 0 auto', width: '4%'}}>
-                            {cStart===16?'':<button className={`rounded-circle ${styles.roundedNextButton}`} onClick={forward}>▷</button>}
-                        </div>
-                    </Row>
-                </div>
-            </div>:''}
-        </div>
+    <Box><List>
+         <TransitionGroup>
+            {cDayWeek.map((item) => (
+            <Collapse key={dwData.weekEnabled}>
+                {renderWeekOrDay({item})}
+            </Collapse>
+            )
+        )}
+        </TransitionGroup>
+        </List>
+        </Box>
+    </div>
 }
 
 export default WeatherDetails;
