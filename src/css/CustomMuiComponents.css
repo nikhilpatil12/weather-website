@@ -32,3 +32,19 @@
     border-top-left-radius: 100%;
     border-bottom-left-radius: 100%;
 }
+
+.MuiDivider-root.MuiDivider-fullWidth{
+    border-color: rgba(228, 228, 228, 0.836);
+    border-bottom-width: medium;
+    margin: 10px 0;
+}
+.uvBar{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}

@@ -47,7 +47,7 @@ const Search = (props) => {
         var weatherdata = {};
         console.log(latitude)
         console.log(longitude)
-        await fetch('https://api.open-meteo.com/v1/forecast?latitude='+latitude+'&longitude='+longitude+'&hourly=temperature_2m,relativehumidity_2m,dewpoint_2m,apparent_temperature,precipitation,rain,showers,snowfall,snow_depth,weathercode,cloudcover,visibility,windspeed_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,rain_sum,showers_sum,snowfall_sum,precipitation_hours,windspeed_10m_max,winddirection_10m_dominant,shortwave_radiation_sum,et0_fao_evapotranspiration&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=auto')
+        await fetch('https://api.open-meteo.com/v1/forecast?latitude='+latitude+'&longitude='+longitude+'&hourly=temperature_2m,relativehumidity_2m,dewpoint_2m,precipitation_probability,apparent_temperature,precipitation,rain,showers,snowfall,snow_depth,weathercode,cloudcover,visibility,windspeed_10m&daily=uv_index_max,uv_index_clear_sky_max,weathercode,precipitation_probability_max,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,rain_sum,showers_sum,snowfall_sum,precipitation_hours,windspeed_10m_max,winddirection_10m_dominant,shortwave_radiation_sum,et0_fao_evapotranspiration&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=auto')
                 .then(response => response.json())
                 .then(wData => {
                 weatherdata=wData;
@@ -72,7 +72,9 @@ const Search = (props) => {
     return (
         <div value={props.value} style={{position: 'relative'}}>
             <div className={styles.searchbar} style={{display: 'flex', alignItems: 'center'}}>
-                <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" size="xl" color='#aaa' />
+                <button className={styles.location_button}>
+                    <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" size="xl" color='#aaa' />
+                </button>
                 <input
                     type="text"
                     placeholder="Search..."
@@ -81,10 +83,8 @@ const Search = (props) => {
                     className={styles.searchbarinput}
                 />
                 <button onClick={getUserLocation} className={styles.location_button}>
-                    <FontAwesomeIcon icon={['fa-solid', 'location-dot']} size="2xl" color='#aaa' />
+                    <FontAwesomeIcon icon={['fa-solid', 'location-dot']} size="xl" color='#aaa' />
                 </button>
-
-
             </div>
             {searchSuggestions && searchSuggestions.length > 0 && (
             <ul className={styles.search_results}>

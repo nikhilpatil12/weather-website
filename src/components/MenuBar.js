@@ -25,8 +25,6 @@ const MenuBar = () => {
         <Chip label="Today" size="medium" variant={varient1} color="primary" onClick={toggleDayWeek}></Chip>
         <div className={styles.spacer_div_single}></div>
         <Chip label="Week" size="medium" variant={varient2} color="primary" onClick={toggleDayWeek}></Chip>
-        {/* <button type='button' className={classNames(styles.menutab, !wData.weekEnabled && styles.activeTab)} onClick={toggleDayWeek}>Today</button>
-        <button type='button' className={classNames(styles.menutab, wData.weekEnabled && styles.activeTab)} onClick={toggleDayWeek}>Week</button>    */}
         <div className={styles.spacer_div}></div>
         {/* //TODO: Change the unit */}
         {/* <Chip label="ºF" size="medium" variant={varient1} onClick={toggleUnit}></Chip>

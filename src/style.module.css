@@ -1,11 +1,10 @@
 .background{
-    background-image: url('../src/weather-images/weather-image-cloudy.jpg');
+    background-image: url('../src/weather-images/weather-image-mobile.jpg');
     background-repeat: no-repeat;
     /* background-size: auto; */
     background-size: 100vw 100vh;
-    width: 100%;
+    width: 100vw;
     height: 100vh;
-
 }
 
 .main_component{
@@ -13,30 +12,53 @@
     /* background-color: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px); */
-    width: 90vw;
-    height: 90vh;
-    margin: 5vh 5vw;
+    width: 100vw;
+    height: 100vh;
     border-radius: 4vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+@media (min-width: 900px) {
+    .main_component{
+        position: absolute;
+        /* background-color: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px); */
+        width: 90vw;
+        height: 90vh;
+        margin: 5vh 5vw;
+        border-radius: 4vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    .sidebar{
+        position: absolute;
+        border-radius: 4vh 0vh 0vh 4vh;
+    }
+    .detail_component{
+        position: absolute;
+        border-radius: 0vh 4vh 4vh 0vh;
+    }
 }
 
 .sidebar{
-    position: absolute;
+    padding: 1vw;
     background-color: rgba(0, 0, 0, 0.3);
     -webkit-backdrop-filter: blur(30px);
     backdrop-filter: blur(30px);
     width: inherit;
     height: 100%;
-    border-radius: 4vh 0vh 0vh 4vh;
+    border-radius: 0vh;
 }
 
 .detail_component{
-    position: absolute;
     background-color: rgba(255, 255, 255, 0.1);
     -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
     width: inherit;
     height: 100%;
-    border-radius: 0vh 4vh 4vh 0vh;
+    border-radius: 0vh;
 }
 
 .search_results{
@@ -49,7 +71,7 @@
     top: 5vh;
     list-style: none;
     margin: 0 auto;
-    width: 15vw;
+    width: 90%;
     padding: 0;
     color: azure;
     background: rgba(0, 0, 0, 0.75);
@@ -73,9 +95,11 @@
     height: 5vh;
     border: none;
     padding: 0 1vw;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    margin: 2vw;
+    background-color: rgba(0,0,0, 0.2);
+    /* -webkit-backdrop-filter: blur(10px); */
+    /* -webkit-back */
+    /* backdrop-filter: blur(10px); */
+    margin: 1vw;
 }
 .searchbarinput{
     /* border-radius: 20px; */
@@ -166,8 +190,7 @@
 }
 
 .weekWeatherIcon{
-    margin: 8%;
-    font-size: 50px;
+    font-size: 200%;
     color: rgba(28, 28, 28, 0.666);
 }
 .currentWeatherIcon{
@@ -205,82 +228,60 @@
     color: black;
     display: inline-block;
 }
+.dayInfoBlockMobile{
+    width: 13%;
+    height: min-content;
+    background-color: rgba(255 ,255 ,255 ,0.5);
+    border: none;
+    padding: 1% 1%;
+    border-radius: 0.5vw;
+    font-size: 2vh;
+    font-weight: 500;
+    margin: 0 0.5%;
+    color: black;
+    display: inline-block;
+}
 
 .dayWeatherIcon{
     margin: 8%;
     font-size: 180%;
     color: rgba(28, 28, 28, 0.666);
 }
-.buttonWrapper{
+.sideSmallWeatherIcon{
+    margin: 8%;
+    font-size: 180%;
+    color: rgba(255, 255, 255, 0.666);
+}
+.highlights_component{
+    background-color: blue;
+}
+
+
+.indicator {
     display: flex;
-    width: inherit;
-    height: inherit;
-    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    font-size: 2.2em;
+    font-weight: 100;
+    color: #555;
 }
-.roundedBackButton{
-    background-color: rgba(255, 255, 255, 0.451);
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
-    border: none;
-    vertical-align: middle;
-    border-radius: 100px;
-}
-.roundedBackButton:hover{
-    background-color: rgba(255, 255, 255, 0.677);
-}
-.roundedNextButton{
-    background-color: rgba(255, 255, 255, 0.451);
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
-    border: none;
-    border-radius: 100px;
-}
-.roundedNextButton:hover{
-    background-color: rgba(255, 255, 255, 0.677);
-}
-.col{
-    flex: 0 0 auto;
-    width: 4%;
-}
-.col11{
-    flex: 0 0 auto;
-    width: 92%;
-}
-
-.animate {
-    transition: opacity 0.6s ease-in-out;
-    transition: transform 0.6s ease-in-out;
-    /* animation-name: fadein;
-    animation-duration: 0.6s;
-    animation-timing-function: ease-in-out; */
-    /* animation: 3s infinite alternate fadein; */
-}
-  
-.animate.grow {
-    /* transform:scaleX(0.999); */
-    /* transform:scaleX(1); */
-    animation: 3s linear 0s fadein;
-}
-.animate.grow2 {
-    transform:scaleX(0);
-    transform:scaleX(1);
-/* 
-    opacity: 0.8; */
-    /* animation: 3s infinite alternate fadein; */
-}
-@keyframes fadein {
-    from {
-      transform: opacity(1);
-    }
-    50%{
-        transform: opacity(0);
-    }
-    to {
-      transform: opacity(0);
-    }
-}
-
-.activeTab{
-    background-color: rgba(255, 255, 255, 0.334);
-    color: black;
+.indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    font-size: 1.8em;
+    font-weight: 100;
+    color: #555;
 }

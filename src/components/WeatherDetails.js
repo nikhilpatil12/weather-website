@@ -10,9 +10,12 @@ import Collapse from 'react-bootstrap/Collapse';
 import { Box, IconButton, List } from "@mui/material";
 import { TransitionGroup } from 'react-transition-group';
 import { ArrowLeft, NavigateBefore, NavigateNext, SwipeLeft } from "@mui/icons-material";
-
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Stack from "@mui/material/Stack";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
 const WeatherDetails = () => {
+    const isDesktop = useMediaQuery('(min-width:900px)');
     const wData = useContext(WeatherDataContext);
     console.log(wData.weatherData)
     var weekdata = wData.weatherData.daily;
@@ -124,50 +127,76 @@ const WeatherDetails = () => {
     // console.log(processedWeekData)
     // var weekRender, dayRender;
     // if(processedWeekData!=null){
-        const weekRender = processedWeekData!=null?processedWeekData.map((processedData) =>
+    const weekRender = processedWeekData!=null?processedWeekData.map((processedData) =>
+        //using mediaquery to determine desktop or mobile
+        isDesktop?
         <div className={styles.weekInfoBlock} key={processedData.time}>
             {processedData.weekday}<br></br>
             <div className={styles.weekWeatherIcon}>
                 {/* <img className={styles.weatherIcon} src = {MySvg}></img> */}
-                <i width='40px' className={getWeatherIcon(processedData.weathercode, 7)} ></i>
+                <i className={getWeatherIcon(processedData.weathercode, 7)} ></i>
             </div>
             {/* {processedData.weathertype} */}
-            {processedData.temperature_2m_min}º,  
-            {processedData.temperature_2m_max}º
-        </div>
+            <div>{processedData.temperature_2m_min}º</div>
+            <div>{processedData.temperature_2m_max}º</div>
+        </div>:
+        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={0}>
+            <span style={{width: "15vw", alignContent: "start"}}>{processedData.weekday}</span>
+            <span style={{width: "15vw", alignContent: "start"}} className={styles.weekWeatherIcon}><i className={getWeatherIcon(processedData.weathercode, 7)} ></i></span>
+            <span style={{width: "15vw"}}>{processedData.temperature_2m_min}º </span>
+            <span style={{width: "15vw"}}>{processedData.temperature_2m_max}º</span>
+        </Stack>
     ):processedWeekData;
 
     const dayRender = (first, last) => processedDayData.slice(first,last).map((processedData) =>
-        <div className={styles.dayInfoBlock} key={processedData.time}>
+        isDesktop?<div className={styles.dayInfoBlock} key={processedData.time}>
             {processedData.hour}
-            
             <div className={styles.dayWeatherIcon}>
-                {/* <img className={styles.weatherIcon} src = {MySvg}></img> */}
                 <i width='40px' className={getWeatherIcon(processedData.weathercode, processedData.hh)} ></i>
             </div>
-            {/* {processedData.weathertype} */}
+            {processedData.temperature_rounded}º
+        </div>:
+        <div className={styles.dayInfoBlockMobile} key={processedData.time}>
+            {processedData.hour}
+            <div className={styles.dayWeatherIcon}>
+                <i width='40px' className={getWeatherIcon(processedData.weathercode, processedData.hh)} ></i>
+            </div>
             {processedData.temperature_rounded}º
         </div>
     );
     const [cStart, setCstart] = useState(0);
-    const [cEnd, setCend] = useState(8);
+    const [cEnd, setCend] = useState(isDesktop?8:6);
     const [cArr, setCarr] = useState([0,8,16]);
     const [cDayWeek, setCdayWeek] = useState([1,2]);
 
     const forward = () => {
-        if(cStart<16)
+        if(cStart<18)
         {
-            setCstart(cStart+8);
-            setCend(cEnd+8);
-            console.log(cStart, cEnd)
+            if(isDesktop){
+                setCstart(cStart+8);
+                setCend(cEnd+8);
+                console.log(cStart, cEnd)
+            }
+            else{
+                setCstart(cStart+6);
+                setCend(cEnd+6);
+                console.log(cStart, cEnd)
+            }
         }
     }
     const backward = () => {
         if(cStart>0)
         {
-            setCstart(cStart-8);
-            setCend(cEnd-8);
-            console.log(cStart, cEnd)
+            if(isDesktop){
+                setCstart(cStart-8);
+                setCend(cEnd-8);
+                console.log(cStart, cEnd)
+            }
+            else{
+                setCstart(cStart-6);
+                setCend(cEnd-6);
+                console.log(cStart, cEnd)
+            }
         }
     }
     // }
@@ -300,54 +329,56 @@ const WeatherDetails = () => {
     }
   
     const renderWeekOrDay = (item) => {
-        return <div>{dwData.weekEnabled?<Box className={styles.weekData}>{weekRender}</Box>:''}
+        return <div>{dwData.weekEnabled?<Box className={styles.weekData}>{isDesktop?weekRender:<Box sx={{width: "90vw", margin: "0 5vw"}}><Stack
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="stretch"
+            spacing={0.5}
+          >{weekRender}</Stack></Box>}</Box>:''}
         {!dwData.weekEnabled?
         <Box className={styles.dayData}>
             <div className={styles.scrollview}>
-                <Row>
-                    <div className={`d-flex align-items-center justify-content-end ${styles.col}`} style={{padding:'0', alignItems:'end', flex: '0 0 auto', width: '4%'}}>
-                        {/* {cStart===0?'':<button className={`rounded-circle ${styles.roundedBackButton}`} onClick={backward}>◁</button>} */}
-                        {cStart===0?'':<IconButton onClick={backward}><NavigateBefore></NavigateBefore></IconButton>}
-                    </div>
-                    <Box id='collapse' style={{'padding':'0', flex: '0 0 auto', width: '92%', overflow: 'hidden'}} ref={containerRef}>
-                        <List>
-                            <TransitionGroup>
-                                {cArr.map((start)=> (
-                                    <Collapse key={cStart} container={containerRef.current}>
-                                        <Box>
-                                            {dayRender(cStart, cEnd)}
-                                        </Box>
-                                    </Collapse>
+                <Grid2 container>
+                    <Grid2 xs={1} sm={1} md={2} lg={1} xl={1} sx={{alignSelf: "center"}}>
+                        {cStart===0?'':<IconButton sx={{border: 1}} onClick={backward}><NavigateBefore></NavigateBefore></IconButton>}
+                    </Grid2>
+                    <Grid2 xs={10} sm={10} md={10} lg={10} xl={10}>
+                        <Box id='collapse' ref={containerRef}>
+                            <List>
+                                <TransitionGroup>
+                                    {cArr.map((start)=> (
+                                        <Collapse style={{alignContent: "center"}} key={cStart} container={containerRef.current}>
+                                            <Box>
+                                                {dayRender(cStart, cEnd)}
+                                            </Box>
+                                        </Collapse>
 
-                                ))}
-                            </TransitionGroup>
-                        </List>
-                    </Box>
-                    <div className={`d-flex align-items-center justify-content-start`} style={{padding:'0', alignItems:'start', flex: '0 0 auto', width: '4%'}}>
-                        {/* {cStart===16?'':<button className={`rounded-circle ${styles.roundedNextButton}`} onClick={forward}>▷</button>} */}
-                        {cStart===16?'':<IconButton variant="outlined" onClick={forward}><NavigateNext></NavigateNext></IconButton>}
-                    </div>
-                </Row>
+                                    ))}
+                                </TransitionGroup>
+                            </List>
+                        </Box>
+                    </Grid2>
+                    <Grid2 xs={1} sm={1} md={1} lg={1} xl={1} sx={{alignSelf: "center"}}>
+                        {cStart===16 || cStart===18?'':<IconButton sx={{border: 1}} onClick={forward}><NavigateNext></NavigateNext></IconButton>}
+                    </Grid2>
+                </Grid2>
             </div>
         </Box>:''}
 </div>
     }
 
     if(weekRender==null || dayRender==null)
-        return <Spinner animation="grow" />;
-    else return <div className={styles.render}>
-    <Box><List>
-         <TransitionGroup>
-            {cDayWeek.map((item) => (
-            <Collapse key={dwData.weekEnabled}>
-                {renderWeekOrDay({item})}
-            </Collapse>
-            )
-        )}
-        </TransitionGroup>
+        return '';
+    else return <Box>
+        <List>
+            <TransitionGroup>
+                {cDayWeek.map((item) => (
+                <Collapse key={dwData.weekEnabled}>
+                    {renderWeekOrDay({item})}
+                </Collapse>))}
+            </TransitionGroup>
         </List>
-        </Box>
-    </div>
+    </Box>
 }
 
 export default WeatherDetails;
