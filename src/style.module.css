@@ -241,7 +241,9 @@
     color: black;
     display: inline-block;
 }
-
+.vertical_spacer{
+    height: 1rem;
+}
 .dayWeatherIcon{
     margin: 8%;
     font-size: 180%;

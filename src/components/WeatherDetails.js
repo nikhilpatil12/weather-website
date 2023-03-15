@@ -3,13 +3,10 @@ import { WeatherDataContext } from "../contexts/WeatherDataContext";
 import { DayWeekContext } from "../contexts/DayWeekContext";
 import styles from '../style.module.css';
 import '../css/weather-icons.min.css';
-import Button from 'react-bootstrap/Button';
-import Spinner from 'react-bootstrap/Spinner';
-import Row from 'react-bootstrap/Row';
 import Collapse from 'react-bootstrap/Collapse';
 import { Box, IconButton, List } from "@mui/material";
 import { TransitionGroup } from 'react-transition-group';
-import { ArrowLeft, NavigateBefore, NavigateNext, SwipeLeft } from "@mui/icons-material";
+import { NavigateBefore, NavigateNext } from "@mui/icons-material";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Stack from "@mui/material/Stack";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
@@ -166,8 +163,8 @@ const WeatherDetails = () => {
     );
     const [cStart, setCstart] = useState(0);
     const [cEnd, setCend] = useState(isDesktop?8:6);
-    const [cArr, setCarr] = useState([0,8,16]);
-    const [cDayWeek, setCdayWeek] = useState([1,2]);
+    const [cArr] = useState([0,8,16]);
+    const [cDayWeek] = useState([1,2]);
 
     const forward = () => {
         if(cStart<18)

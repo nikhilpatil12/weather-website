@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import Search from "./Search";
 import styles from '../style.module.css';
 import { WeatherDataContext } from "../contexts/WeatherDataContext";
@@ -12,15 +12,15 @@ const Sidebar = (props) =>{
     // const [weatherData, setWeatherData] = useState();
     // const [locationData, setLocationData] = useState();
 
-    const { weatherData, setWeatherData} = useContext(WeatherDataContext);
+    const { weatherData } = useContext(WeatherDataContext);
     var daydata = weatherData.hourly;
-    var weekData = weatherData.daily;
+    // var weekData = weatherData.daily;
 
     const getDaySummary = (data, datetime) => {
         // console.log(data)
-        let daysummary = [];
+        // let daysummary = [];
         var len = 0;
-        var summary=[];
+        // var summary=[];
         var avgRain = 0, avgCloud=0;
         var sumRain=0, sumCloud=0;
         for(var i=0;i<50;i++){
@@ -203,6 +203,7 @@ const Sidebar = (props) =>{
             <Box>
                 <h4 className={`${styles.currentWeather} d-flex align-items-center justify-content-start`}>{getWeekday(weatherData.current_weather.time.split('T')[0])} {weatherData.current_weather.time.split('T')[1]}</h4>
             </Box>
+            <div className={styles.vertical_spacer}></div>
             <Divider sx={{padding: "10px 0 0"}}/>
             <Box sx={{padding: "10px 0"}}>
                 <h4 className={`${styles.currentWeather} d-flex align-items-center justify-content-start`}>

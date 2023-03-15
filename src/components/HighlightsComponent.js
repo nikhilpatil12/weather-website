@@ -3,7 +3,7 @@ import { WeatherDataContext } from "../contexts/WeatherDataContext";
 import { DayWeekContext } from "../contexts/DayWeekContext";
 import styles from '../style.module.css';
 import '../css/weather-icons.min.css';
-import { Container, Card, Grid, Paper, Box, Button } from "@mui/material";
+import { Container, Card,  Box } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -14,7 +14,7 @@ import { LineProgressBar } from '@frogress/line'
 const HighlightsComponent = () => {
     // setWeatherData(props.value);
     const [weekEnabled, setWeekEnabled] = useState(false)
-    const { weatherData, setWeatherData} = useContext(WeatherDataContext);
+    const { weatherData } = useContext(WeatherDataContext);
     var daydata = weatherData.hourly;
     var aqidata = weatherData.aqi;
     var weekData = weatherData.daily;

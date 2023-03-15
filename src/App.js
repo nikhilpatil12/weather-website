@@ -1,8 +1,6 @@
-import logo from './logo.svg';
 import './App.css';
 import Background from './components/Background';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import blue from '@mui/material/colors/blue';
 
 const theme = createTheme({
   palette: {

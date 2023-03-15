@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from '../style.module.css';
 import MenuBar from './MenuBar';
 import WeatherDetails from './WeatherDetails';
@@ -9,7 +9,6 @@ const DetailComponent = () => {
     // setWeatherData(props.value);
     const [weekEnabled, setWeekEnabled] = useState(false)
     const wData = { weekEnabled, setWeekEnabled };
-
     return <DayWeekContext.Provider value={wData}>
         <div className={styles.detail_component}>
             <MenuBar></MenuBar>

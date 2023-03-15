@@ -1,14 +1,14 @@
 import styles from '../style.module.css';
 import React, { useState, useContext } from "react";
-import classNames from 'classnames';
 import { DayWeekContext } from '../contexts/DayWeekContext';
 import { Chip } from '@mui/material';
 import {ToggleButton} from '@mui/material';
 import {ToggleButtonGroup} from '@mui/material';
+import { UnitContext } from '../contexts/UnitContext';
 
 const MenuBar = () => {
     const wData = useContext(DayWeekContext);
-    const [wUnit, setWUnit] = useState("fahrenheit")
+    const {unit, setUnit }= useContext(UnitContext)
     const [varient1, setVarient1] = useState("filled");
     const [varient2, setVarient2] = useState("outlined");
     // var varient1 = "outlined";
@@ -19,7 +19,7 @@ const MenuBar = () => {
         setVarient2( varient2 === "outlined" ? "filled" :"outlined");
     }
     const toggleUnit = () => {
-        setWUnit(wUnit === "fahrenheit" ? "celcius" :"fahrenheit")
+        setUnit(unit === "fahrenheit" ? "celcius" :"fahrenheit")
     }
     return <div className={styles.menubar}>
         <Chip label="Today" size="medium" variant={varient1} color="primary" onClick={toggleDayWeek}></Chip>
@@ -30,7 +30,7 @@ const MenuBar = () => {
         {/* <Chip label="ºF" size="medium" variant={varient1} onClick={toggleUnit}></Chip>
            
         <Chip label="ºC" size="medium" variant={varient2} onClick={toggleUnit}></Chip> */}
-        <ToggleButtonGroup variant="filled" size="small" color="primary" value={wUnit} exclusive onChange={toggleUnit}  aria-label="Platform" >
+        <ToggleButtonGroup variant="filled" size="small" color="primary" value={unit} exclusive onChange={toggleUnit}  aria-label="Platform" >
             <ToggleButton className={styles.roundedtoggleleft} value="fahrenheit">ºF</ToggleButton>
             <ToggleButton className={styles.roundedtoggleright} value="celcius">ºC</ToggleButton>
         </ToggleButtonGroup>

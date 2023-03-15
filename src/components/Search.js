@@ -1,13 +1,15 @@
-import React, {useContext, useState} from "react";
+import {useContext, useState} from "react";
 import styles from '../style.module.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { WeatherDataContext } from "../contexts/WeatherDataContext";
+import { UnitContext } from "../contexts/UnitContext";
 
 const Search = (props) => {
-    const { weatherData, setWeatherData, locationData, setLocationData } = useContext(WeatherDataContext);
+    const { setWeatherData } = useContext(WeatherDataContext);
     const [searchTerm, setSearchTerm] = useState('');
     const [searchSuggestions, setSearchSuggestions] = useState([]);
     const [userLocation, setUserLocation] = useState({});
+    const { unit } = useContext(UnitContext);
 
     async function getUserLocation (){
         if (navigator.geolocation) {
@@ -48,7 +50,14 @@ const Search = (props) => {
         var aqidata = {};
         console.log(latitude)
         console.log(longitude)
-        await fetch('https://api.open-meteo.com/v1/forecast?latitude='+latitude+'&longitude='+longitude+'&hourly=temperature_2m,relativehumidity_2m,dewpoint_2m,precipitation_probability,apparent_temperature,precipitation,rain,showers,snowfall,snow_depth,weathercode,cloudcover,visibility,windspeed_10m&daily=uv_index_max,uv_index_clear_sky_max,weathercode,precipitation_probability_max,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,rain_sum,showers_sum,snowfall_sum,precipitation_hours,windspeed_10m_max,winddirection_10m_dominant,shortwave_radiation_sum,et0_fao_evapotranspiration&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=auto')
+        var api_url
+
+        if(unit === 'fahrenheit')
+          api_url = 'https://api.open-meteo.com/v1/forecast?latitude='+latitude+'&longitude='+longitude+'&hourly=temperature_2m,relativehumidity_2m,dewpoint_2m,precipitation_probability,apparent_temperature,precipitation,rain,showers,snowfall,snow_depth,weathercode,cloudcover,visibility,windspeed_10m&daily=uv_index_max,uv_index_clear_sky_max,weathercode,precipitation_probability_max,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,rain_sum,showers_sum,snowfall_sum,precipitation_hours,windspeed_10m_max,winddirection_10m_dominant,shortwave_radiation_sum,et0_fao_evapotranspiration&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=auto'
+        else
+          api_url = 'https://api.open-meteo.com/v1/forecast?latitude='+latitude+'&longitude='+longitude+'&hourly=temperature_2m,relativehumidity_2m,dewpoint_2m,precipitation_probability,apparent_temperature,precipitation,rain,showers,snowfall,snow_depth,weathercode,cloudcover,visibility,windspeed_10m&daily=uv_index_max,uv_index_clear_sky_max,weathercode,precipitation_probability_max,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,rain_sum,showers_sum,snowfall_sum,precipitation_hours,windspeed_10m_max,winddirection_10m_dominant,shortwave_radiation_sum,et0_fao_evapotranspiration&current_weather=true&windspeed_unit=mph&precipitation_unit=inch&timezone=auto'
+         
+        await fetch(api_url)
                 .then(response => response.json())
                 .then(wData => {
                     weatherdata=wData;
@@ -101,7 +110,7 @@ const Search = (props) => {
                     suggestion.country_code && (
                     <li key={suggestion.id}>
                         <div onClick={event => selectLocation(event, suggestion.latitude, suggestion.longitude, suggestion.name, suggestion.admin1, suggestion.country_code)}>
-                            {suggestion.name}, {(suggestion.admin1 && (suggestion.admin1+','))} {suggestion.country_code}  <img width='20px' src={`http://www.geonames.org/flags/x/${suggestion.country_code.toLowerCase()}.gif`}/>
+                            {suggestion.name}, {(suggestion.admin1 && (suggestion.admin1+','))} {suggestion.country_code}  <img width='20px' alt='country flag' src={`http://www.geonames.org/flags/x/${suggestion.country_code.toLowerCase()}.gif`}/>
                         </div>
                     </li>
                     )
