@@ -5,7 +5,7 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 # Install any needed packages
-RUN npm install
+RUN npm install --legacy-peer-deps
 # Build the app
 RUN npm run build
 # Set the environment variable
