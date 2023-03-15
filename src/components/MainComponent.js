@@ -23,6 +23,7 @@ const MainComponent = () => {
       const fetchData = async() => {
         var weatherdata = {};
         var locationdata = {};
+        var aqidata = {};
 
         await fetch('https://geocoding-api.open-meteo.com/v1/search?name=Los%20Angeles')
           .then(response=>response.json())
@@ -36,9 +37,16 @@ const MainComponent = () => {
               .then(wData => {
                 weatherdata=wData;
         });
+
+        await fetch('https://air-quality-api.open-meteo.com/v1/air-quality?latitude='+locationdata.latitude+'&longitude='+locationdata.longitude+'&hourly=pm10,pm2_5,us_aqi,us_aqi_pm2_5,us_aqi_pm10')
+                .then(response => response.json())
+                .then(wData => {
+                    aqidata=wData;
+        });
         weatherdata.locationName = locationdata.name;
         weatherdata.locationState = locationdata.admin1;
         weatherdata.locationCountry = locationdata.country;
+        weatherdata.aqi = aqidata;
         wData.setWeatherData(weatherdata);
         setLocationData(locationdata);
         // props.onChange(weatherdata);

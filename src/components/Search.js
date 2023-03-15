@@ -45,17 +45,26 @@ const Search = (props) => {
     }
     async function selectLocation(event, latitude, longitude, locationName, locationState, locationCountry) {
         var weatherdata = {};
+        var aqidata = {};
         console.log(latitude)
         console.log(longitude)
         await fetch('https://api.open-meteo.com/v1/forecast?latitude='+latitude+'&longitude='+longitude+'&hourly=temperature_2m,relativehumidity_2m,dewpoint_2m,precipitation_probability,apparent_temperature,precipitation,rain,showers,snowfall,snow_depth,weathercode,cloudcover,visibility,windspeed_10m&daily=uv_index_max,uv_index_clear_sky_max,weathercode,precipitation_probability_max,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,precipitation_sum,rain_sum,showers_sum,snowfall_sum,precipitation_hours,windspeed_10m_max,winddirection_10m_dominant,shortwave_radiation_sum,et0_fao_evapotranspiration&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=auto')
                 .then(response => response.json())
                 .then(wData => {
-                weatherdata=wData;
+                    weatherdata=wData;
         });
+
+        await fetch('https://air-quality-api.open-meteo.com/v1/air-quality?latitude='+latitude+'&longitude='+longitude+'&hourly=pm10,pm2_5,us_aqi,us_aqi_pm2_5,us_aqi_pm10')
+                .then(response => response.json())
+                .then(wData => {
+                    aqidata=wData;
+        });
+
 
         weatherdata.locationName = locationName;
         weatherdata.locationState = locationState;
         weatherdata.locationCountry = locationCountry
+        weatherdata.aqi = aqidata;
         // setWeatherData(weatherdata);
         setSearchSuggestions();
         setSearchTerm('');

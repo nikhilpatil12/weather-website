@@ -207,9 +207,9 @@ const Sidebar = (props) =>{
             <Box sx={{padding: "10px 0"}}>
                 <h4 className={`${styles.currentWeather} d-flex align-items-center justify-content-start`}>
                     <Grid2 container spacing={2}>
-                        <Grid2 xs={3} md={3} lg={3} sm={3} xl={3}>
+                        <Grid2 xs={3} md={3} lg={3} sm={3} xl={3} sx={{alignSelf: 'center'}} >
                             <Box className={styles.sideSmallWeatherIcon}>
-                                <i className={getWeatherIcon(2, weatherData.current_weather.time.split('T')[1].split(':')[0])} ></i>
+                                <i className={getWeatherIcon(weatherData.current_weather.weathercode, weatherData.current_weather.time.split('T')[1].split(':')[0])} ></i>
                             </Box>
                         </Grid2>
                         <Grid2 xs={9} md={9} lg={9} sm={9} xl={9} sx={{alignSelf: "center", textAlign: "left"}}>
