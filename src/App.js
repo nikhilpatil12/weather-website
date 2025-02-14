@@ -1,4 +1,5 @@
 import './App.css';
+import React from 'react';
 import Background from './components/Background';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
