@@ -4,12 +4,11 @@ import { DayWeekContext } from "../contexts/DayWeekContext";
 import styles from '../style.module.css';
 import '../css/weather-icons.min.css';
 import Collapse from 'react-bootstrap/Collapse';
-import { Box, IconButton, List } from "@mui/material";
+import { Box, Grid2, IconButton, List } from "@mui/material";
 import { TransitionGroup } from 'react-transition-group';
 import { NavigateBefore, NavigateNext } from "@mui/icons-material";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Stack from "@mui/material/Stack";
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
 const WeatherDetails = () => {
     const isDesktop = useMediaQuery('(min-width:900px)');
@@ -17,16 +16,16 @@ const WeatherDetails = () => {
     console.log(wData.weatherData)
     var weekdata = wData.weatherData.daily;
     var daydata = wData.weatherData.hourly;
-    
+
     const containerRef = React.useRef(null);
 
     const dwData = useContext(DayWeekContext);
     const prepareWeekWeatherObject = (data) => {
         // console.log(data)
         let weekweatherdata = [];
-        for(var i=0;i<7;i++){
+        for (var i = 0; i < 7; i++) {
             // console.log(data[i])
-            var wd={};
+            var wd = {};
             wd.weekday = getWeekday(data.time[i]);
             wd.time = data.time[i];
             wd.apparent_temperature_max = data.apparent_temperature_max[i];
@@ -55,16 +54,15 @@ const WeatherDetails = () => {
         // console.log(data)
         let dayweatherdata = [];
         var len = 0;
-        for(var i=0;i<100;i++){
+        for (var i = 0; i < 100; i++) {
             // console.log(data[i])
             var datadate = data.time[i].split('T')[0];
             var currentdate = datetime.split('T')[0];
             var datatime = data.time[i].split('T')[1].split(':')[0]
             var currenttime = datetime.split('T')[1].split(':')[0]
-            if(datadate >= currentdate && len<24)
-            {
-                if((datadate===currentdate && datatime>currenttime)||datadate>currentdate){
-                    var dd={};
+            if (datadate >= currentdate && len < 24) {
+                if ((datadate === currentdate && datatime > currenttime) || datadate > currentdate) {
+                    var dd = {};
                     dd.time = data.time[i];
                     dd.hh = data.time[i].split('T')[1].split(':')[0];
                     dd.hour = getHour(data.time[i]);
@@ -100,18 +98,18 @@ const WeatherDetails = () => {
     };
 
     const getHour = timeStr => {
-        var hour='';
+        var hour = '';
         var hh = parseInt(timeStr.split('T')[1].split(':')[0]);
 
-        if(hh!==0 || hh!==12){
-            if(hh>0 && hh<12)
-                hour = hh+'AM'
-            if(hh>12 && hh<24)
-                hour = (hh-12)+'PM'
+        if (hh !== 0 || hh !== 12) {
+            if (hh > 0 && hh < 12)
+                hour = hh + 'AM'
+            if (hh > 12 && hh < 24)
+                hour = (hh - 12) + 'PM'
         }
-        if(hh===0){
+        if (hh === 0) {
             hour = '12AM'
-        }if(hh===12){
+        } if (hh === 12) {
             hour = '12PM'
         }
         return hour;
@@ -124,74 +122,72 @@ const WeatherDetails = () => {
     // console.log(processedWeekData)
     // var weekRender, dayRender;
     // if(processedWeekData!=null){
-    const weekRender = processedWeekData!=null?processedWeekData.map((processedData) =>
+    const weekRender = processedWeekData != null ? processedWeekData.map((processedData) =>
         //using mediaquery to determine desktop or mobile
-        isDesktop?
-        <div className={styles.weekInfoBlock} key={processedData.time}>
-            {processedData.weekday}<br></br>
-            <div className={styles.weekWeatherIcon}>
-                {/* <img className={styles.weatherIcon} src = {MySvg}></img> */}
-                <i className={getWeatherIcon(processedData.weathercode, 7)} ></i>
-            </div>
-            {/* {processedData.weathertype} */}
-            <div>{processedData.temperature_2m_min}º</div>
-            <div>{processedData.temperature_2m_max}º</div>
-        </div>:
-        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={0}>
-            <span style={{width: "15vw", alignContent: "start"}}>{processedData.weekday}</span>
-            <span style={{width: "15vw", alignContent: "start"}} className={styles.weekWeatherIcon}><i className={getWeatherIcon(processedData.weathercode, 7)} ></i></span>
-            <span style={{width: "15vw"}}>{processedData.temperature_2m_min}º </span>
-            <span style={{width: "15vw"}}>{processedData.temperature_2m_max}º</span>
-        </Stack>
-    ):processedWeekData;
+        isDesktop ?
+            <div className={styles.weekInfoBlock} key={processedData.time}>
+                {processedData.weekday}<br></br>
+                <div className={styles.weekWeatherIcon}>
+                    {/* <img className={styles.weatherIcon} src = {MySvg}></img> */}
+                    <i className={getWeatherIcon(processedData.weathercode, 7)} ></i>
+                </div>
+                {/* {processedData.weathertype} */}
+                <div>{processedData.temperature_2m_min}º</div>
+                <div>{processedData.temperature_2m_max}º</div>
+            </div> :
+            <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={0}>
+                <span style={{ width: "15vw", alignContent: "start" }}>{processedData.weekday}</span>
+                <span style={{ width: "15vw", alignContent: "start" }} className={styles.weekWeatherIcon}><i className={getWeatherIcon(processedData.weathercode, 7)} ></i></span>
+                <span style={{ width: "15vw" }}>{processedData.temperature_2m_min}º </span>
+                <span style={{ width: "15vw" }}>{processedData.temperature_2m_max}º</span>
+            </Stack>
+    ) : processedWeekData;
 
-    const dayRender = (first, last) => processedDayData.slice(first,last).map((processedData) =>
-        isDesktop?<div className={styles.dayInfoBlock} key={processedData.time}>
+    const dayRender = (first, last) => processedDayData.slice(first, last).map((processedData) =>
+        isDesktop ? <div className={styles.dayInfoBlock} key={processedData.time}>
             {processedData.hour}
             <div className={styles.dayWeatherIcon}>
                 <i width='40px' className={getWeatherIcon(processedData.weathercode, processedData.hh)} ></i>
             </div>
             {processedData.temperature_rounded}º
-        </div>:
-        <div className={styles.dayInfoBlockMobile} key={processedData.time}>
-            {processedData.hour}
-            <div className={styles.dayWeatherIcon}>
-                <i width='40px' className={getWeatherIcon(processedData.weathercode, processedData.hh)} ></i>
+        </div> :
+            <div className={styles.dayInfoBlockMobile} key={processedData.time}>
+                {processedData.hour}
+                <div className={styles.dayWeatherIcon}>
+                    <i width='40px' className={getWeatherIcon(processedData.weathercode, processedData.hh)} ></i>
+                </div>
+                {processedData.temperature_rounded}º
             </div>
-            {processedData.temperature_rounded}º
-        </div>
     );
     const [cStart, setCstart] = useState(0);
-    const [cEnd, setCend] = useState(isDesktop?8:6);
-    const [cArr] = useState([0,8,16]);
-    const [cDayWeek] = useState([1,2]);
+    const [cEnd, setCend] = useState(isDesktop ? 8 : 6);
+    const [cArr] = useState([0, 8, 16]);
+    const [cDayWeek] = useState([1, 2]);
 
     const forward = () => {
-        if(cStart<18)
-        {
-            if(isDesktop){
-                setCstart(cStart+8);
-                setCend(cEnd+8);
+        if (cStart < 18) {
+            if (isDesktop) {
+                setCstart(cStart + 8);
+                setCend(cEnd + 8);
                 console.log(cStart, cEnd)
             }
-            else{
-                setCstart(cStart+6);
-                setCend(cEnd+6);
+            else {
+                setCstart(cStart + 6);
+                setCend(cEnd + 6);
                 console.log(cStart, cEnd)
             }
         }
     }
     const backward = () => {
-        if(cStart>0)
-        {
-            if(isDesktop){
-                setCstart(cStart-8);
-                setCend(cEnd-8);
+        if (cStart > 0) {
+            if (isDesktop) {
+                setCstart(cStart - 8);
+                setCend(cEnd - 8);
                 console.log(cStart, cEnd)
             }
-            else{
-                setCstart(cStart-6);
-                setCend(cEnd-6);
+            else {
+                setCstart(cStart - 6);
+                setCend(cEnd - 6);
                 console.log(cStart, cEnd)
             }
         }
@@ -199,7 +195,7 @@ const WeatherDetails = () => {
     // }
 
 
-    function getWeatherType (weathercode){
+    function getWeatherType(weathercode) {
         switch (weathercode) {
             case 0:
                 return 'Clear sky';  //day-sunny || night-clear
@@ -261,118 +257,118 @@ const WeatherDetails = () => {
                 return 'Invalid code';
         }
     }
-    
-    function getWeatherIcon (weathercode, time){
+
+    function getWeatherIcon(weathercode, time) {
         switch (weathercode) {
             case 0:
-                return time>6 || time<18 ? 'wi wi-day-sunny' : ' wi wi-night-clear'
+                return time > 6 || time < 18 ? 'wi wi-day-sunny' : ' wi wi-night-clear'
             case 1:
-                return time>6 || time<18 ? 'wi wi-day-cloudy' : 'wi wi-night-alt-partly-cloudy'
+                return time > 6 || time < 18 ? 'wi wi-day-cloudy' : 'wi wi-night-alt-partly-cloudy'
             case 2:
-                return time>6 || time<18 ? 'wi wi-day-cloudy' : 'wi wi-night-alt-partly-cloudy' //| wi wi-day-cloudy-high
+                return time > 6 || time < 18 ? 'wi wi-day-cloudy' : 'wi wi-night-alt-partly-cloudy' //| wi wi-day-cloudy-high
             case 3:
-                return time>6 || time<18 ? 'wi wi-day-sunny-overcast' : 'wi wi-cloudy' //wi wi-cloudy
+                return time > 6 || time < 18 ? 'wi wi-day-sunny-overcast' : 'wi wi-cloudy' //wi wi-cloudy
             case 45:
-                return time>6 || time<18 ? 'wi wi-day-fog' : 'wi wi-night-fog' //wi wi-fog
+                return time > 6 || time < 18 ? 'wi wi-day-fog' : 'wi wi-night-fog' //wi wi-fog
             case 48:
-                return time>6 || time<18 ? 'wi wi-day-fog' : 'wi wi-night-fog' //wi wi-fog 
+                return time > 6 || time < 18 ? 'wi wi-day-fog' : 'wi wi-night-fog' //wi wi-fog 
             case 51:
-                return time>6 || time<18 ? 'wi wi-day-showers' : 'wi wi-night-alt-showers'
+                return time > 6 || time < 18 ? 'wi wi-day-showers' : 'wi wi-night-alt-showers'
             case 53:
-                return time>6 || time<18 ? 'wi wi-day-showers' : 'wi wi-night-alt-showers'
+                return time > 6 || time < 18 ? 'wi wi-day-showers' : 'wi wi-night-alt-showers'
             case 55:
-                return time>6 || time<18 ? 'wi wi-day-showers' : 'wi wi-night-alt-showers'
+                return time > 6 || time < 18 ? 'wi wi-day-showers' : 'wi wi-night-alt-showers'
             case 56:
-                return time>6 || time<18 ? 'wi wi-day-sleet' : 'wi wi-night-alt-sleet'
+                return time > 6 || time < 18 ? 'wi wi-day-sleet' : 'wi wi-night-alt-sleet'
             case 57:
-                return time>6 || time<18 ? 'wi wi-day-sleet' : 'wi wi-night-alt-sleet'
+                return time > 6 || time < 18 ? 'wi wi-day-sleet' : 'wi wi-night-alt-sleet'
             case 61:
-                return time>6 || time<18 ? 'wi wi-day-rain' : 'wi wi-night-alt-rain' //wi wi-rain 
+                return time > 6 || time < 18 ? 'wi wi-day-rain' : 'wi wi-night-alt-rain' //wi wi-rain 
             case 63:
-                return time>6 || time<18 ? 'wi wi-day-rain' : 'wi wi-night-alt-rain' //wi wi-rain 
+                return time > 6 || time < 18 ? 'wi wi-day-rain' : 'wi wi-night-alt-rain' //wi wi-rain 
             case 65:
-                return time>6 || time<18 ? 'wi wi-day-rain' : 'wi wi-night-alt-rain' //wi wi-rain 
+                return time > 6 || time < 18 ? 'wi wi-day-rain' : 'wi wi-night-alt-rain' //wi wi-rain 
             case 66:
-                return time>6 || time<18 ? 'wi wi-day-rain' : 'wi wi-night-alt-rain' //wi wi-rain 
+                return time > 6 || time < 18 ? 'wi wi-day-rain' : 'wi wi-night-alt-rain' //wi wi-rain 
             case 67:
-                return time>6 || time<18 ? 'wi wi-day-rain' : 'wi wi-night-alt-rain' //wi wi-rain 
+                return time > 6 || time < 18 ? 'wi wi-day-rain' : 'wi wi-night-alt-rain' //wi wi-rain 
             case 71:
-                return time>6 || time<18 ? 'wi wi-day-snow' : 'wi wi-night-alt-snow'
+                return time > 6 || time < 18 ? 'wi wi-day-snow' : 'wi wi-night-alt-snow'
             case 73:
-                return time>6 || time<18 ? 'wi wi-day-snow' : 'wi wi-night-alt-snow'
+                return time > 6 || time < 18 ? 'wi wi-day-snow' : 'wi wi-night-alt-snow'
             case 75:
-                return time>6 || time<18 ? 'wi wi-day-snow' : 'wi wi-night-alt-snow'
+                return time > 6 || time < 18 ? 'wi wi-day-snow' : 'wi wi-night-alt-snow'
             case 77:
                 return 'wi wi-snow';
             case 80:
-                return time>6 || time<18 ? 'wi wi-day-rain-mix' : 'wi wi-night-alt-rain-mix'
+                return time > 6 || time < 18 ? 'wi wi-day-rain-mix' : 'wi wi-night-alt-rain-mix'
             case 81:
-                return time>6 || time<18 ? 'wi wi-day-rain-mix' : 'wi wi-night-alt-rain-mix'
+                return time > 6 || time < 18 ? 'wi wi-day-rain-mix' : 'wi wi-night-alt-rain-mix'
             case 82:
-                return time>6 || time<18 ? 'wi wi-day-rain-mix' : 'wi wi-night-alt-rain-mix'
+                return time > 6 || time < 18 ? 'wi wi-day-rain-mix' : 'wi wi-night-alt-rain-mix'
             case 85:
-                return time>6 || time<18 ? 'wi wi-day-snow' : 'wi wi-night-alt-snow'
+                return time > 6 || time < 18 ? 'wi wi-day-snow' : 'wi wi-night-alt-snow'
             case 86:
-                return time>6 || time<18 ? 'wi wi-day-snow' : 'wi wi-night-alt-snow'
+                return time > 6 || time < 18 ? 'wi wi-day-snow' : 'wi wi-night-alt-snow'
             case 95:
-                return time>6 || time<18 ? 'wi wi-day-thunderstorm' : 'wi wi-night-alt-thunderstorm'
+                return time > 6 || time < 18 ? 'wi wi-day-thunderstorm' : 'wi wi-night-alt-thunderstorm'
             case 96:
-                return time>6 || time<18 ? 'wi wi-day-snow-thunderstorm' : 'wi wi-night-alt-snow-thunderstorm'
+                return time > 6 || time < 18 ? 'wi wi-day-snow-thunderstorm' : 'wi wi-night-alt-snow-thunderstorm'
             case 99:
-                return time>6 || time<18 ? 'wi wi-day-snow-thunderstorm' : 'wi wi-night-alt-snow-thunderstorm'
+                return time > 6 || time < 18 ? 'wi wi-day-snow-thunderstorm' : 'wi wi-night-alt-snow-thunderstorm'
             default:
                 return 'Invalid code';
         }
     }
-  
+
     const renderWeekOrDay = (item) => {
-        return <div>{dwData.weekEnabled?<Box className={styles.weekData}>{isDesktop?weekRender:<Box sx={{width: "90vw", margin: "0 5vw"}}><Stack
+        return <div>{dwData.weekEnabled ? <Box className={styles.weekData}>{isDesktop ? weekRender : <Box sx={{ width: "90vw", margin: "0 5vw" }}><Stack
             direction="column"
             justifyContent="flex-start"
             alignItems="stretch"
             spacing={0.5}
-          >{weekRender}</Stack></Box>}</Box>:''}
-        {!dwData.weekEnabled?
-        <Box className={styles.dayData}>
-            <div className={styles.scrollview}>
-                <Grid2 container>
-                    <Grid2 xs={1} sm={1} md={2} lg={1} xl={1} sx={{alignSelf: "center"}}>
-                        {cStart===0?'':<IconButton sx={{border: 1}} onClick={backward}><NavigateBefore></NavigateBefore></IconButton>}
-                    </Grid2>
-                    <Grid2 xs={10} sm={10} md={10} lg={10} xl={10}>
-                        <Box id='collapse' ref={containerRef}>
-                            <List>
-                                <TransitionGroup>
-                                    {cArr.map((start)=> (
-                                        <Collapse style={{alignContent: "center"}} key={cStart} container={containerRef.current}>
-                                            <Box>
-                                                {dayRender(cStart, cEnd)}
-                                            </Box>
-                                        </Collapse>
+        >{weekRender}</Stack></Box>}</Box> : ''}
+            {!dwData.weekEnabled ?
+                <Box className={styles.dayData}>
+                    <div className={styles.scrollview}>
+                        <Grid2 container>
+                            <Grid2 xs={1} sm={1} md={2} lg={1} xl={1} sx={{ alignSelf: "center" }}>
+                                {cStart === 0 ? '' : <IconButton sx={{ border: 1 }} onClick={backward}><NavigateBefore></NavigateBefore></IconButton>}
+                            </Grid2>
+                            <Grid2 xs={10} sm={10} md={10} lg={10} xl={10}>
+                                <Box id='collapse' ref={containerRef}>
+                                    <List>
+                                        <TransitionGroup>
+                                            {cArr.map((start) => (
+                                                <Collapse style={{ alignContent: "center" }} key={cStart} container={containerRef.current}>
+                                                    <Box>
+                                                        {dayRender(cStart, cEnd)}
+                                                    </Box>
+                                                </Collapse>
 
-                                    ))}
-                                </TransitionGroup>
-                            </List>
-                        </Box>
-                    </Grid2>
-                    <Grid2 xs={1} sm={1} md={1} lg={1} xl={1} sx={{alignSelf: "center"}}>
-                        {cStart===16 || cStart===18?'':<IconButton sx={{border: 1}} onClick={forward}><NavigateNext></NavigateNext></IconButton>}
-                    </Grid2>
-                </Grid2>
-            </div>
-        </Box>:''}
-</div>
+                                            ))}
+                                        </TransitionGroup>
+                                    </List>
+                                </Box>
+                            </Grid2>
+                            <Grid2 xs={1} sm={1} md={1} lg={1} xl={1} sx={{ alignSelf: "center" }}>
+                                {cStart === 16 || cStart === 18 ? '' : <IconButton sx={{ border: 1 }} onClick={forward}><NavigateNext></NavigateNext></IconButton>}
+                            </Grid2>
+                        </Grid2>
+                    </div>
+                </Box> : ''}
+        </div>
     }
 
-    if(weekRender==null || dayRender==null)
+    if (weekRender == null || dayRender == null)
         return '';
     else return <Box>
         <List>
             <TransitionGroup>
                 {cDayWeek.map((item) => (
-                <Collapse key={dwData.weekEnabled}>
-                    {renderWeekOrDay({item})}
-                </Collapse>))}
+                    <Collapse key={dwData.weekEnabled}>
+                        {renderWeekOrDay({ item })}
+                    </Collapse>))}
             </TransitionGroup>
         </List>
     </Box>
